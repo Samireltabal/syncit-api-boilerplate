@@ -31,7 +31,6 @@ $api->version('v1', ['middleware' => 'apiHead'], function (Router $api) {
 		});
 	});
 	$api->group([
-		'middleware' => 'api',
 	    'namespace' => '\App\Http\Controllers\Auth',
 	    'prefix' => 'auth'
 	], function ($api) {

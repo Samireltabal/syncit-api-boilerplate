@@ -50,6 +50,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if($exception instanceof Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException) {
+            return response()->json([
+                'code' => 401,
+                'msg' => "{$exception->getMessage()}",
+            ], 401);
+        }
         return parent::render($request, $exception);
     }
 }
