@@ -25,16 +25,18 @@ $api->version('v1', ['middleware' => 'apiHead'], function (Router $api) {
 		$api->get('/ping', function() {
 			return response()->json('pong',200);
 		});
-		$api->post('/generate', function(Request $request) {
-			$otp = $request->get('otp');
-			return OTP::test($otp);
-		});
+		// $api->post('/generate', function(Request $request) {
+		// 	return Uuid::generate()->string;
+		// });
 	});
 	$api->group([
 	    'namespace' => '\App\Http\Controllers\Auth',
 	    'prefix' => 'auth'
 	], function ($api) {
 		$api->post('login', 'AuthController@login');
+		$api->get('/login/{service}', 'SocialLoginController@redirect');
+		$api->get('/login/{service}/callback', 'SocialLoginController@callback');
+		$api->get('/{service}/test', 'SocialLoginController@test');
 		$api->post('signup', 'AuthController@signup');
 		$api->post('logout', 'AuthController@logout');
 		$api->post('refresh', 'AuthController@refresh');
@@ -42,5 +44,10 @@ $api->version('v1', ['middleware' => 'apiHead'], function (Router $api) {
 		$api->get('reverify', 'AuthController@reverify');
 		$api->post('me', 'AuthController@me');
 		$api->post('verified', 'AuthController@verifiedRoute')->middleware('verified');
+		$api->group(['middleware'=>[] , 'prefix'=>'mqtt'], function($api) {
+		  	$api->post('/verify', 'mqttController@verify');
+			$api->post('/admin', 'mqttController@admin');
+			$api->get('/acl', 'mqttController@acl');
+		});
 	});
 });

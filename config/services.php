@@ -20,6 +20,17 @@ return [
         'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
     ],
 
+    'github' => [
+        'client_id' => env('GITHUB_CLIENT_ID', null),
+        'client_secret' => env('GITHUB_CLIENT_SECRET', null),
+        'redirect' => env('GITHUB_CLIENT_CALLBACK', null)
+    ],
+    'facebook' => [
+        'client_id' => env('FACEBOOK_CLIENT_ID', null),
+        'client_secret' => env('FACEBOOK_CLIENT_SECRET', null),
+        'redirect' => env('GITHUB_CLIENT_CALLBACK', null)
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],

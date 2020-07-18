@@ -6,11 +6,13 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
+
 use Hash;
 
 class User extends Authenticatable implements MustVerifyEmail, JWTSubject
 {
-    use Notifiable;
+    use Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'uuid', 'github_id'
     ];
 
     /**
@@ -39,7 +41,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-    protected $with = ['otp'];
+    protected $with = ['otp', 'social'];
 
     protected $appends=['registered', 'verified'];
 
@@ -87,4 +89,15 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     public function otp() {
         return $this->hasOne('App\otp','user_id');
     }
+
+    public function social()
+    {
+        return $this->hasMany('App\SocialLink', 'user_id', 'id');
+    }
+
+    public function hasSocialLinked($service)
+    {
+        return (bool) $this->social->where('service', $service)->count();
+    }
+
 }

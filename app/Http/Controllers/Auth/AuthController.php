@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\signUpRequest;
 use App\Notifications\verifyUser;
 use App\Notifications\userVerified;
-
+use Uuid;
 use App\User;
 use OTP;
 /**
@@ -25,7 +25,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('apiAuth', ['except' => ['login','signup']]);
+		$this->middleware('apiAuth', ['except' => ['login','signup']]);
     }
 
     /**
@@ -70,7 +70,9 @@ class AuthController extends Controller
 	* })
     */
 	public function signup(signUpRequest $request) {
-		$user = User::create($request->all());
+		$data = collect($request->all());
+		$data['uuid'] = Uuid::generate()->string;
+		$user = User::create($data->toArray());
 		$otp = OTP::generate($user, true);
 		$user->notify(new verifyUser($otp->code));
 		$response = array(

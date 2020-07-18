@@ -229,7 +229,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'OTP' => \App\Http\Controllers\Otp\OtpController::class,
-
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
     ],
 
 ];
