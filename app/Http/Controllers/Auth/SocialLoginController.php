@@ -72,6 +72,7 @@ class SocialLoginController extends Controller
                 'password' => '',
                 'uuid' => Uuid::generate()->string
             ]);
+            $user->assignRole('user');
             $user->markEmailAsVerified();
         }
 

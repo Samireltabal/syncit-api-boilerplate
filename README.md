@@ -7,6 +7,42 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
+## About Boilerplate
+
+Open Source Api backend Boilierplate Based on :
+ - [laravel/framework : 7.19.1](https://github.com/laravel/laravel)
+ - [dingo/api: 3.0.0](https://github.com/dingo/api)
+ - [tymon/jwt-auth: 1.0.0](https://github.com/tymondesigns/jwt-auth)
+ - [spatie/laravel-permission: 3.13.0](https://github.com/spatie/laravel-permission)
+ - [spatie/laravel-medialibrary: 8.3.3](https://github.com/spatie/laravel-medialibrary)
+ - [laravel/socialite: 4.4.1](https://github.com/laravel/socialite)
+
+# Included : 
+ - Laravel Authentication / Authorization 
+ - OTP generator for user verification 
+ - Generate UUid for User on registration
+ - Social Login ( Tested On Github )
+ - Backend For Http Mqtt Authentication and Authorization ( Tested On Emqx Broker )
+ - Add Role / Delete Role / Grant Role / Revoke Role  Routes 
+ - Tester Routes for Role Authorization .
+ 
+# Installation on linux: 
+
+ - composer create-project synciteg/api-init
+ - cd api-init
+ - cp .env.example ./.env
+ - update .env file 
+ - php artisan migrate --seed 
+ - tweak your folder permissions as normal laravel installation 
+ - start using
+  -- admin user 
+    --- email: admin@example.com
+    --- password: password
+
+# work in progress : 
+ - Avatar Update For User 
+ - MQTT ACL 
+ - merge realtime notifications 
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

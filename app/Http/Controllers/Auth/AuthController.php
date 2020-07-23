@@ -79,6 +79,7 @@ class AuthController extends Controller
 			"message" => "your account has been created, please check your inbox to verify",
 			"code" => 201
 		);
+		$user->assignRole('user');
 		return response($response);
 	}
 

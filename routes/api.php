@@ -29,6 +29,7 @@ $api->version('v1', ['middleware' => 'apiHead'], function (Router $api) {
 		// 	return Uuid::generate()->string;
 		// });
 	});
+	// Authentication Routes 
 	$api->group([
 	    'namespace' => '\App\Http\Controllers\Auth',
 	    'prefix' => 'auth'
@@ -49,5 +50,29 @@ $api->version('v1', ['middleware' => 'apiHead'], function (Router $api) {
 			$api->post('/admin', 'mqttController@admin');
 			$api->get('/acl', 'mqttController@acl');
 		});
+	});
+	// Roles Routes
+	$api->group([
+		'namespace' => '\App\Http\Controllers\Roles',
+		'prefix' => 'roles'
+	], function($api) {
+		$api->get('/', 'RolesController@index');
+		$api->post('/add', 'RolesController@store');
+		$api->get('/remove/{id}', 'RolesController@destroy');
+		$api->get('/show/{id}', 'RolesController@show');
+		$api->post('/grant', 'RolesController@grant');
+		$api->post('/revoke', 'RolesController@revoke');
+		// $api->post('update/{id}', 'RolesController@update');
+	});
+	$api->group(['prefix' => 'routes'], function($api) {
+		$api->get('admin', function() {
+			return response()->json('success',200);
+		})->middleware('role:admin');
+		$api->get('user', function() {
+			return response()->json('success',200);
+		})->middleware('apiAuth');
+		$api->get('employee', function() {
+			return response()->json('success',200);
+		})->middleware('role:employee|admin');
 	});
 });

@@ -12,11 +12,6 @@ class mqttController extends Controller
         $validation = $request->validate([
             'token' => 'required'
         ]);
-        // $token = $request->input('token');
-        // $data = array(
-        //     'head' => str_replace("Bearer ", "",  $request->header('Authorization')),
-        //     'body' => str_replace("Bearer ", "", $request->input('token'))
-        // );
         $token = str_replace("Bearer ", "", $request->input('token'));
         $user = JWTAuth::setToken($token)->toUser();
         if( $user ) {
@@ -30,12 +25,19 @@ class mqttController extends Controller
     }
 
     public function admin(Request $request) {
-        $data = array(
-            'type' => 'super user request',
-            'request' => $request->all()
-        );
-        logger($data);
-        return response('success', 200);
+        $validation = $request->validate([
+            'token' => 'required'
+        ]);
+        $token = str_replace("Bearer ", "", $request->input('token'));
+        $user = JWTAuth::setToken($token)->toUser();
+        if( $user ) {
+            if($user->hasRole('admin')) {
+                return response()->json($user,200);
+            }
+            return response()->json(['message' => 'Not Authorised'], 401);
+        } else {
+            return response()->json(['message' => 'unauthinticated'], 401);
+        }
     }
 
     public function acl(Request $request) {
@@ -44,6 +46,6 @@ class mqttController extends Controller
             'request' => $request->all()
         );
         logger($data);
-        return response('success', 200);
+        return response($data, 200);
     }
 }

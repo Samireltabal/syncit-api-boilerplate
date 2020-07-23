@@ -43,8 +43,10 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
 
     protected $with = ['otp', 'social'];
 
-    protected $appends=['registered', 'verified'];
+    protected $appends=['registered', 'verified', 'role'];
 
+    protected $guard_name = 'api';
+    
     public function getRegisteredAttribute(){
         
             return \Carbon\Carbon::createFromTimeStamp(strtotime($this->attributes['created_at']) )->diffForHumans();
@@ -84,6 +86,16 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = Hash::make($value);
+    }
+
+    public function getroleAttribute() {
+        if($this->hasRole('admin')) {
+            return 'admin';
+        } else if ($this->hasRole('employee')) {
+            return 'employee';
+        } else {
+            return 'user';
+        }
     }
 
     public function otp() {
